@@ -48,10 +48,10 @@ def bereken_gegevens(gegeven: gegevens.Gegevens) -> List[data.MaandData]:
     print(f"*     Bouwk.rapport: {gegeven.kosten_bouwkundig_rapport:7.0f} euro        *")
     print(f"*           Overige: {gegeven.kosten_overig + gegeven.kosten_overig_aftrekbaar:7.0f} euro        *")
     print("*                    ------- +           *")
-    print(f"*             Bruto: {kosten_bruto:7.0f} euro ({((kosten_bruto / gegeven.kosten_huis) - 1) * 100:4.1f}%)*")
+    print(f"*             Bruto: {kosten_bruto:7.0f} euro (+{((kosten_bruto / gegeven.kosten_huis) - 1) * 100:3.1f}%)*")
     print(f"* Belastingvoordeel: {bel_voordeel_koop:7.0f} euro        *")
     print("*                    ------- +           *")
-    print(f"*             Netto: {kosten_netto:7.0f} euro ({((kosten_netto / gegeven.kosten_huis) - 1) * 100:4.1f}%)*")
+    print(f"*             Netto: {kosten_netto:7.0f} euro (+{((kosten_netto / gegeven.kosten_huis) - 1) * 100:3.1f}%)*")
     print("*----------------------------------------*")
     print("") # 400 * (1 + x) = 410 =----> x = 410 / 400 - 1
     print("*----------------- HYPOTHEEK ------------*")
