@@ -26,8 +26,8 @@ def test_bereken_rente_en_aflossing_linear() -> None:
     totale_rente = 0.0
     for jaar in range(gegeven.looptijd_hypotheek_jaren):
         for _ in range(12):
-            aflossing, rente = hypotheek.bereken_aflossing_en_rente(gegeven, rest_schuld,  # type: ignore
-                                                                    originele_schuld, jaar)
+            aflossing, rente, _ = hypotheek.bereken_aflossing_en_rente(gegeven, rest_schuld,  # type: ignore
+                                                                       originele_schuld, jaar)
             rest_schuld -= aflossing
             totale_rente += rente
             assert aflossing == pytest.approx(319.44, abs=0.1)
@@ -52,8 +52,8 @@ def test_bereken_rente_en_aflossing_annuiteiten() -> None:
     totale_rente = 0.0
     for jaar in range(gegeven.looptijd_hypotheek_jaren):
         for _ in range(12):
-            aflossing, rente = hypotheek.bereken_aflossing_en_rente(gegeven, rest_schuld,  # type: ignore
-                                                                    originele_schuld, jaar)
+            aflossing, rente, _ = hypotheek.bereken_aflossing_en_rente(gegeven, rest_schuld,  # type: ignore
+                                                                       originele_schuld, jaar)
             rest_schuld -= aflossing
             totale_rente += rente
             assert aflossing + rente == pytest.approx(592.90, abs=0.1)

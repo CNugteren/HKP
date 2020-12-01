@@ -76,13 +76,15 @@ def bereken_gegevens(gegeven: gegevens.Gegevens) -> List[data.MaandData]:
         for maand in range(12):
 
             # Bereken de nieuwe data voor deze maand
-            aflossing, rente = hypotheek.bereken_aflossing_en_rente(gegeven, rest_schuld, hypotheek_schuld, jaar)
+            aflossing, aftrekbare_rente, niet_aftrekbare_rente = hypotheek.bereken_aflossing_en_rente(
+                gegeven, rest_schuld, hypotheek_schuld, jaar
+            )
             rest_schuld = rest_schuld - aflossing
-            hypotheek_rente_aftrek = belasting.bereken_hra(gegeven, rente, jaar)
+            hypotheek_rente_aftrek = belasting.bereken_hra(gegeven, aftrekbare_rente, jaar)
             woz_waarde = exp_stijging(gegeven.woz_waarde, gegeven.woz_stijging_jaarlijks_percentage, jaar)
             eigenwoningforfait_belasting = belasting.bereken_ewf(gegeven, woz_waarde, jaar)
             onderhoud = exp_stijging(gegeven.onderhoud_per_maand, gegeven.inflatie_jaarlijks_percentage, jaar)
-            rente_netto = rente - hypotheek_rente_aftrek
+            rente_netto = aftrekbare_rente + niet_aftrekbare_rente - hypotheek_rente_aftrek
             kosten_zonder_aflossing = rente_netto + eigenwoningforfait_belasting + onderhoud
 
             # Verschil ten opzichte van huren
@@ -96,7 +98,7 @@ def bereken_gegevens(gegeven: gegevens.Gegevens) -> List[data.MaandData]:
                 maand=maand,
                 aflossing=aflossing,
                 restschuld=rest_schuld,
-                rente=rente,
+                rente=aftrekbare_rente + niet_aftrekbare_rente,
                 hypotheek_rente_aftrek=hypotheek_rente_aftrek,
                 rente_netto=rente_netto,
                 woz_waarde=woz_waarde,
