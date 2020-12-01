@@ -24,13 +24,16 @@ def plot_maandelijks(plot_data: List[data.MaandData], x_waarden: np.ndarray, x_l
     plt.stackplot(x_waarden, *y_waarden, labels=labels,
                   colors=alle_kleuren[:len(data.MAANDELIJKSE_PLOT1)])
 
+    y_max = max([max(y) for y in y_waarden])
     for index, naam in enumerate(data.MAANDELIJKSE_PLOT2):
         y_waarden = [getattr(maand_data, naam) for maand_data in plot_data]
         plt.plot(x_waarden, y_waarden, label=naam.capitalize().replace("_", " "),
                  color=alle_kleuren[len(data.MAANDELIJKSE_PLOT1) + index])
+        y_max = max(y_max, max(y_waarden))
 
     plt.ylabel("Maandelijks bedrag in euro")
     plt.xticks(x_waarden[::12], labels=x_labels)
+    plt.yticks(list(range(0, int(y_max), 250)), labels=[str(v) for v in range(0, int(y_max), 250)])
     axis.set_xlim(xmin=0, xmax=len(x_waarden))
     plt.grid(True, axis="y")
     plt.legend(loc="upper left")
@@ -41,14 +44,17 @@ def plot_totaal(plot_data: List[data.MaandData], x_waarden: np.ndarray, x_labels
     plt.subplot(212)
     axis = plt.gca()
 
+    y_max = 0
     for naam in data.TOTALE_WAARDEN:
-        y_waarden = [getattr(maand_data, naam) / 1000 for maand_data in plot_data]
+        y_waarden = [getattr(maand_data, naam) for maand_data in plot_data]
         plt.plot(x_waarden, y_waarden, label=naam.capitalize().replace("_", " "))
+        y_max = max(y_max, max(y_waarden))
 
     plt.xlabel("Jaar na aankoop")
 
     plt.ylabel("Totaal bedrag in euro (x1000)")
     plt.xticks(x_waarden[::12], labels=x_labels)
+    plt.yticks(list(range(0, int(y_max), 100_000)), labels=[str(v) for v in range(0, int(y_max / 1000), 100)])
     axis.set_xlim(xmin=0, xmax=len(x_waarden))
     plt.grid(True, axis="y")
     plt.legend(loc="upper left")

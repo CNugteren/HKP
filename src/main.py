@@ -32,6 +32,7 @@ def bereken_gegevens(gegeven: gegevens.Gegevens) -> List[data.MaandData]:
 
     # Hypotheek gegevens
     hypotheek_schuld = kosten_bruto - gegeven.eigen_inleg
+    hypotheek_schuld_percentage = hypotheek_schuld / gegeven.kosten_huis
 
     # Check voor valide input
     if gegeven.eigen_inleg < kosten_niet_aftrekbaar:
@@ -60,12 +61,12 @@ def bereken_gegevens(gegeven: gegevens.Gegevens) -> List[data.MaandData]:
     print(f"*          Rente #1: {gegeven.hypotheek_rente_percentage:4.2f}% (tot {gegeven.rente_vast_jaren} jaar) *")
     print(f"*          Rente #2: {gegeven.rente_percentage_nadien:4.2f}% (na {gegeven.rente_vast_jaren} jaar)  *")
     if gegeven.aflossingsvrij_deel != 0.0:
-        print(f"*    Aflossingsvrij: {gegeven.aflossingsvrij_deel:4.2f}% a {gegeven.rente_percentage_aflossingsvrij:4.2f}% rente *")  # pylint: disable=line-too-long
+        print(f"*    Aflossingsvrij: {gegeven.aflossingsvrij_deel:3.1f}% a {gegeven.rente_percentage_aflossingsvrij:4.2f}% rente *")  # pylint: disable=line-too-long
     print("*                                        *")
     print(f"*      Bruto kosten: {kosten_bruto:7.0f} euro        *")
     print(f"*       Eigen inleg: {gegeven.eigen_inleg:7.0f} euro        *")
     print("*                    ------- -           *")
-    print(f"*         Hypotheek: {hypotheek_schuld:7.0f} euro        *")
+    print(f"*         Hypotheek: {hypotheek_schuld:7.0f} euro ({hypotheek_schuld_percentage * 100:3.0f}%) *")
     print("*----------------------------------------*")
 
     # Loop over alle maanden tot de aflossing nul is
