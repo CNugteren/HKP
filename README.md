@@ -3,6 +3,14 @@
 Een simpele tool om informatie te plotten over de kosten van het financieren van een woning, inclusief hypotheekkosten en andere eenmalige of maandelijkse kosten. De tool zal direct een grafiek plotten, maar slaat alle gegevens ook op als CSV bestand om verder te inspecteren of zelf grafieken mee te maken.
 De tool kan de informatie ook vergelijken met de kosten van het huren.
 
+## Wat kan je ermee?
+
+Waarom zou je HuisKoopPlot gebruiken? Hieronder een aantal mogelijke redenen:
+
+1. Voordat je een huis koopt wil je weten wat je maandelijkse lasten ongeveer gaan zijn en waaruit die opgebouwd zijn. Andersom kan je ook vanuit een bepaald maximum je maximum koopprijs bepalen.
+2. Je wilt verschillende hypotheekvormen met elkaar vergelijken. Door deze tool meerdere keer te gebruiken met verschillende opties kan je een lineaire- en annuiteitenhypotheek met elkaar vergelijken voor jouw specifieke situatie. Je kan ook kijken wat er gebeurt als je bijvoorbeeld een deel aflossingsvrij maakt.
+3. Je huurt momenteel en weet niet of je nu iets wilt kopen of liever doorsparen of afwachten wat de huizenmarkt doet. Met deze tool kan je precies zijn bij welke toekomstige waardedaling je hypotheek onder water staat of wanneer huren toch nog voordeliger uitpakt. Je kan ook inzicht krijgen in je vermogensopbouw.
+
 ## Benodigdheden
 
 Om HKP zelf of de tests te draaien zelf te draaien heb je nodig:
