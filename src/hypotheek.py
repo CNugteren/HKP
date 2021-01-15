@@ -19,9 +19,9 @@ def bereken_aflossing_en_rente(gegeven: gegevens.Gegevens, rest_schuld: float, o
     # Indien een deel aflossingsvrij is
     niet_aftrekbare_rente = 0.0
     if gegeven.aflossingsvrij_deel > 0.0:
+        niet_aftrekbare_rente = (gegeven.aflossingsvrij_deel / 100.0) * rest_schuld * maand_rente
         originele_schuld = (1.0 - gegeven.aflossingsvrij_deel / 100.0) * originele_schuld
         rest_schuld = (1.0 - gegeven.aflossingsvrij_deel / 100.0) * rest_schuld
-        niet_aftrekbare_rente = (gegeven.aflossingsvrij_deel / 100.0) * rest_schuld * maand_rente
 
     # Hypotheekvorm: linear
     if gegeven.hypotheek_vorm == gegevens.HypotheekVorm.Lineair:
