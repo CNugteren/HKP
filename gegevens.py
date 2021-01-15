@@ -55,12 +55,13 @@ class Gegevens(NamedTuple):
 
     # Dit zijn de extra kosten die bij de aanschaf van een woning horen. Sommigen kunnen op nul gezet worden afhankelijk
     # van de situatie. Sommigen zijn aftrekbaar: daar is al rekening mee gehouden in de berekeningen, hier moeten de
-    # bruto kosten gespecifieerd worden.
-    kosten_notaris: float = 1000  # voor zowel hypotheek als koopacte
-    kosten_makelaar: float = 0  # voor een eventuele aankoopmakelaar
-    kosten_hypotheek: float = 3000  # aftrekbaar, inclusief hypotheekadvies en eventuele NHG kosten
-    kosten_taxatie: float = 500  # aftrekbaar
-    kosten_bouwkundig_rapport: float = 500  # aftrekbaar
+    # bruto kosten gespecifieerd worden. Huidige waarden genomen van:
+    # https://www.ing.nl/particulier/hypotheken/woondiensten/index.html
+    kosten_notaris: float = 980  # voor zowel hypotheek als koopacte
+    kosten_makelaar: float = 650  # voor een eventuele aankoopmakelaar
+    kosten_hypotheek: float = 1750  # aftrekbaar, inclusief hypotheekadvies en eventuele NHG kosten
+    kosten_taxatie: float = 465  # aftrekbaar
+    kosten_bouwkundig_rapport: float = 300  # aftrekbaar
     kosten_overig: float = 0
     kosten_overig_aftrekbaar: float = 0  # aftrekbaar
 
@@ -80,7 +81,7 @@ class Gegevens(NamedTuple):
     # Eventueel kan er ook een percentage van de hypotheek als aflossingsvrij gezet worden. Daar hoort vaak wel een
     # hoger rente-percentage bij, dat moet hier dan opgegeven worden.
     aflossingsvrij_deel: float = 0.0
-    rente_percentage_aflossingsvrij: float = hypotheek_rente_percentage
+    rente_percentage_aflossingsvrij: float = hypotheek_rente_percentage + 0.20
 
     # De schatting van de WOZ-waarde van het huis, bijvoorbeeld nodig voor het berekenen van de eigenwoningforfait.
     # Aangenomen wordt dat dit jaar met een bepaald percentage stijgt.
