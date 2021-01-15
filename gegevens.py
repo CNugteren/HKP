@@ -94,4 +94,8 @@ class Gegevens(NamedTuple):
     # Om de onderhoudskosten te schatten over een x-aantal jaar moet de inflatie geschat worden.
     inflatie_jaarlijks_percentage: float = 2.0
 
+    # In geval van een aflossingsvrijehypotheek kan eventueel gespaard worden op bijvoorbeeld een spaarrekening of beurs
+    extra_spaarinleg_per_maand: float = 0.0
+    rendement_jaarlijks_percentage: float = 5.0
+
     # ------------------------------------------------------------------------------------------------------------------

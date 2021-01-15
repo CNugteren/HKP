@@ -73,6 +73,7 @@ def bereken_gegevens(gegeven: gegevens.Gegevens) -> List[data.MaandData]:
     alle_data = []
     rest_schuld = hypotheek_schuld
     voordeel_kopen_ipv_huren = 0.0
+    gespaard_geld = 0.0
     for jaar in range(gegeven.looptijd_hypotheek_jaren):
         for maand in range(12):
 
@@ -95,6 +96,10 @@ def bereken_gegevens(gegeven: gegevens.Gegevens) -> List[data.MaandData]:
             voordeel_kopen_ipv_huren += oude_huur - kosten_zonder_aflossing
             eenmalige_kosten_kopen = kosten_niet_aftrekbaar + kosten_aftrekbaar - bel_voordeel_koop
 
+            # Extra sparen (los van de hypotheek, om eventueel te gebruiken om extra af te lossen)
+            gespaard_geld += gespaard_geld * (gegeven.rendement_jaarlijks_percentage / (12 * 100.0))
+            gespaard_geld += gegeven.extra_spaarinleg_per_maand
+
             # Sla de data op
             alle_data.append(data.MaandData(
                 jaar=jaar,
@@ -109,10 +114,12 @@ def bereken_gegevens(gegeven: gegevens.Gegevens) -> List[data.MaandData]:
                 woz_waarde=woz_waarde,
                 belasting_nadeel=belasting_nadeel,
                 onderhoudskosten=onderhoud,
-                lasten=kosten_zonder_aflossing + aflossing,
+                extra_spaarinleg_per_maand=gegeven.extra_spaarinleg_per_maand,
+                lasten=kosten_zonder_aflossing + aflossing + gegeven.extra_spaarinleg_per_maand,
                 oude_huur=oude_huur,
                 voordeel_nu_kopen_ipv_voorlopig_huren=voordeel_kopen_ipv_huren,
                 voordeel_nu_kopen_ipv_altijd_huren=voordeel_kopen_ipv_huren - eenmalige_kosten_kopen,
+                gespaard_geld=gespaard_geld,
             ))
 
     # Overzichtje van gegevens achteraf

@@ -13,7 +13,7 @@ def plot_maandelijks(plot_data: List[data.MaandData], x_waarden: np.ndarray, x_l
     plt.subplot(211)
     axis = plt.gca()
 
-    alle_kleuren = ["moccasin", "skyblue", "lightcoral", "palegreen", "purple"]
+    alle_kleuren = ["moccasin", "skyblue", "lightcoral", "palegreen", "orange", "purple"]
 
     plt.title("[HKP] HuisKoopPlot, gemaakt met 'https://github.com/CNugteren/huiskoopplot'")
     plt.figtext(0.35, 0.93, "Veel gegevens zijn schattingen, zie gegevens.py voor meer informatie")
