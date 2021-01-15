@@ -31,7 +31,7 @@ def bereken_gegevens(gegeven: gegevens.Gegevens) -> List[data.MaandData]:
     kosten_netto = kosten_bruto - bel_voordeel_koop
 
     # Hypotheek gegevens
-    hypotheek_schuld = kosten_bruto - gegeven.eigen_inleg
+    hypotheek_schuld = kosten_netto - gegeven.eigen_inleg
     hypotheek_schuld_percentage = hypotheek_schuld / gegeven.kosten_huis
 
     # Check voor valide input
@@ -83,10 +83,12 @@ def bereken_gegevens(gegeven: gegevens.Gegevens) -> List[data.MaandData]:
             rest_schuld = rest_schuld - aflossing
             hypotheek_rente_aftrek = belasting.bereken_hra(gegeven, aftrekbare_rente, jaar)
             woz_waarde = exp_stijging(gegeven.woz_waarde, gegeven.woz_stijging_jaarlijks_percentage, jaar)
-            eigenwoningforfait_belasting = belasting.bereken_ewf(gegeven, woz_waarde, jaar)
+            hoogte_eigenwoningforfait = belasting.bereken_ewf(gegeven, woz_waarde, jaar)
+            belasting_voordeel, belasting_nadeel = belasting.bereken(gegeven, hypotheek_rente_aftrek,
+                                                                     hoogte_eigenwoningforfait, jaar)
             onderhoud = exp_stijging(gegeven.onderhoud_per_maand, gegeven.inflatie_jaarlijks_percentage, jaar)
-            rente_netto = aftrekbare_rente + niet_aftrekbare_rente - hypotheek_rente_aftrek
-            kosten_zonder_aflossing = rente_netto + eigenwoningforfait_belasting + onderhoud
+            rente_netto = aftrekbare_rente + niet_aftrekbare_rente - belasting_voordeel
+            kosten_zonder_aflossing = rente_netto + belasting_nadeel + onderhoud
 
             # Verschil ten opzichte van huren
             oude_huur = exp_stijging(gegeven.huur_per_maand, gegeven.huurstijging_jaarlijks_percentage, jaar)
@@ -101,9 +103,11 @@ def bereken_gegevens(gegeven: gegevens.Gegevens) -> List[data.MaandData]:
                 restschuld=rest_schuld,
                 rente=aftrekbare_rente + niet_aftrekbare_rente,
                 hypotheek_rente_aftrek=hypotheek_rente_aftrek,
+                belasting_voordeel=belasting_voordeel,
+                hoogte_eigenwoningforfait=hoogte_eigenwoningforfait,
                 rente_netto=rente_netto,
                 woz_waarde=woz_waarde,
-                eigenwoningforfait_belasting=eigenwoningforfait_belasting,
+                belasting_nadeel=belasting_nadeel,
                 onderhoudskosten=onderhoud,
                 lasten=kosten_zonder_aflossing + aflossing,
                 oude_huur=oude_huur,
@@ -117,9 +121,10 @@ def bereken_gegevens(gegeven: gegevens.Gegevens) -> List[data.MaandData]:
     print(f"*            Restschuld: {math.ceil(alle_data[-1].restschuld):7.0f} euro    *")
     print("*                                        *")
     print(f"*  Betaalde rente bruto: {sum(d.rente for d in alle_data):7.0f} euro    *")
-    print(f"*            Totaal HRA: {sum(d.hypotheek_rente_aftrek for d in alle_data):7.0f} euro    *")
+    print(f"*  Totaal bel. voordeel: {sum(d.belasting_voordeel for d in alle_data):7.0f} euro    *")
     print("*                        ------- -       *")
     print(f"*  Betaalde rente netto: {sum(d.rente_netto for d in alle_data):7.0f} euro    *")
+    print(f"*    Totaal bel. nadeel: {sum(d.belasting_nadeel for d in alle_data):7.0f} euro    *")
     print("*----------------------------------------*")
     return alle_data
 

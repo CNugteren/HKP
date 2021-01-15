@@ -1,4 +1,6 @@
 """Functies met betrekking tot de belastingdienst: zowel belastingen als teruggaves."""
+from typing import Tuple
+
 import gegevens
 
 
@@ -21,3 +23,28 @@ def bereken_ewf(gegeven: gegevens.Gegevens, woz_waarde: float, jaar: int) -> flo
     ewf = (ewf_percentage.get(huidig_jaar, 0.0045) * woz_waarde) / 12.0
     ewf_belasting = ewf * (gegeven.hoogste_belasting_percentage_inkomen / 100.0)
     return ewf_belasting
+
+
+def bereken(gegeven: gegevens.Gegevens, hypotheek_rente_aftrek: float, eigenwoningforfait: float,
+            jaar: int) -> Tuple[float, float]:
+    """Bereken het totale belastingvoordeel (HRA) en nadeel (EWF). Het voordeel is de HRA minus de EWF als dit niet
+    negatief is. Als de EWF hoger is dan de HRA, dan was er vroeger netto geen effect. Echter met de wet Hillen is er
+    sinds 2019 in stapjes elk jaar steeds meer EWF te betalen. Zie voor meer informatie:
+    https://www.consumentenbond.nl/hypotheek/starter/eigenwoningforfait
+    Deze functie retourneerd twee getallen (belasting voordeel, belasting nadeel), waarvan er 1 altijd 0 is. De ander is
+    de te betalen of te ontvangen belasting."""
+
+    # Meer HRA dan EWF: belastingvoordeel
+    if hypotheek_rente_aftrek >= eigenwoningforfait:
+        return hypotheek_rente_aftrek - eigenwoningforfait, 0
+
+    # Meer EWF dan HRA en wet Hillen nog niet in werking: geen nadeel, geen voordeel
+    huidig_jaar = gegeven.aankoopjaar + jaar
+    if huidig_jaar <= 2019:
+        return 0, 0
+
+    # Meer EWF dan HRA en wet Hillen in werken: belastingnadeel
+    if huidig_jaar > 2049:  # EWF is vanaf nu gewoon te betalen
+        return 0, eigenwoningforfait - hypotheek_rente_aftrek
+    jaar_sinds_2019 = huidig_jaar - 2019
+    return 0, (eigenwoningforfait - hypotheek_rente_aftrek) * (jaar_sinds_2019 * (1 / 30))
