@@ -131,7 +131,8 @@ def bereken_gegevens(gegeven: gegevens.Gegevens) -> List[data.MaandData]:
     print(f"*  Totaal bel. voordeel: {sum(d.belasting_voordeel for d in alle_data):7.0f} euro    *")
     print("*                        ------- -       *")
     print(f"*  Betaalde rente netto: {sum(d.rente_netto for d in alle_data):7.0f} euro    *")
-    print(f"*    Totaal bel. nadeel: {sum(d.belasting_nadeel for d in alle_data):7.0f} euro    *")
+    print("*                                        *")
+    print(f"*Betaalde EWF belasting: {sum(d.belasting_nadeel for d in alle_data):7.0f} euro    *")
     print("*----------------------------------------*")
     return alle_data
 
